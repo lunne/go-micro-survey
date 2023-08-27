@@ -4,7 +4,7 @@ API and React Components to create small and easy to use Surveys on any react pa
 ## Development
 To generate new models from GraphQL and Proto just run `go generate` or manually run the generation commands in the `main.go` in your terminal.
 
-### MAC
+### Apple
 ```
 brew install protobuf
 go github.com/99designs/gqlgen
