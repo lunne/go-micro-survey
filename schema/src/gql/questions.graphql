@@ -1,0 +1,51 @@
+scalar Time
+
+# Question is part of a template to be used to ask the user in a survey
+type Question {
+  # unique id for the question
+  id: ID!
+
+  # the question text
+  text: String!
+
+  # the type of the question, if its a text, rating, boolean, etc.
+  type: QuestionType!
+
+  # the options of the question if its a multiple or single choice question
+  options: [String!]
+
+  required: Boolean!
+
+
+  # the template the question belongs to
+  template: Template!
+
+  # when the question was created
+  createdAt: Time!
+
+  # when the question was last updated
+  updatedAt: Time
+}
+
+enum QuestionType {
+  TEXT
+  RATING
+  BOOLEAN
+  MULTIPLE_CHOICE
+  SINGLE_CHOICE
+}
+
+
+# CreateQuestionInput is used in the createTemplate request to create a Template
+input CreateQuestionInput {
+    #  text is the text of the question, e.g. "How satisfied are you with the service?"
+    text: String!
+
+    type: QuestionType!
+
+    # if the the type is MULTIPLE_CHOICE or SINGLE_CHOICE, the options are the possible answers
+    choices: [String!]
+
+    required: Boolean!
+
+}

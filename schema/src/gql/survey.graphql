@@ -1,0 +1,55 @@
+
+
+
+
+
+type Answer {
+  # unique id for the answer
+  id: ID!
+
+  # the question the answer belongs to,
+  question: Question!
+
+  # the answer text
+  text: String
+
+  # the answer rating
+  rating: Int
+
+  # the answer boolean
+  boolean: Boolean
+
+  # choices is a list of choices for the question  # if the type is MULTIPLE_CHOICE or SINGLE_CHOICE
+  choices: [String!]
+
+
+  # when the answer was created
+  createdAt: Time!
+
+  # when the answer was last updated
+  updatedAt: Time
+}
+
+input AnswerInput {
+  # the question id
+  questionId: ID!
+
+  # the answer if text
+  text: String
+
+  # the answer if rating
+  rating: Int
+
+  # the answer if boolean
+  boolean: Boolean
+
+  # if the question is MULTIPLE_CHOICE or SINGLE_CHOICE
+  choices: [String!]
+}
+
+input CreateSurveyInput {
+  # template id of the survey
+  templateId: ID!
+
+  answers: [AnswerInput!]!
+}

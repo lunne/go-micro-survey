@@ -1,0 +1,53 @@
+type Template {
+  # unique id for the template
+  id: ID!
+
+  # name of the template, e.g. "Create Resource X Survey"
+  name: String!
+
+  # description of the template, e.g. "To measure what our users think about "how to create resourceX" , we need to ask them a few questions."
+  description: String!
+
+  # the tags of the template, e.g. ["resourceX", "create"]
+  tags: [String!]
+
+  # the questions of the template
+  questions: [Question!]
+
+  # when the template was created
+  createdAt: Time!
+
+  # when the template was last updated
+  updatedAt: Time
+}
+
+input CreateTemplateInput {
+  # name of the template, e.g. "Create Resource X Survey"
+  name: String!
+
+  # description of the template, e.g. "To measure what our users think about "how to create resourceX" , we need to ask them a few questions."
+  description: String
+
+  # the tags of the template, e.g. ["resourceX", "create"]
+  tags: [String!]
+
+  # the questions of the template, no surcey without questions
+  questions: [CreateQuestionInput!]!
+}
+
+input UpdateTemplateInput {
+  # id of the template to update
+  id: ID!
+
+  # if set the name of the template will be updated
+  name: String!
+
+  # If set the description of the template will be updated
+  description: String!
+
+  # if set the tags of the template will be updated
+  tags: [String!]!
+
+  # if set the questions of the template will be updated
+  questions: [CreateQuestionInput!]!
+}

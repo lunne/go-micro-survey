@@ -1,0 +1,248 @@
+syntax = "proto3";
+
+option go_package = "github.com/lunne/go-micro-survey/schema/surveypb;surveypb";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+package survey;
+
+service SurveyService {
+    rpc CreateTemplate(CreateTemplateRequest) returns (Template) {}
+    rpc GetTemplate(GetTemplateRequest) returns (Template) {}
+    rpc ListTemplates(ListTemplatesRequest) returns (ListTemplatesResponse) {}
+    rpc UpdateTemplate(UpdateTemplateRequest) returns (Template) {}
+    rpc DeleteTemplate(DeleteTemplateRequest) returns (google.protobuf.Empty) {}
+
+    rpc CreateSurvey(CreateSurveyRequest) returns (Survey) {}
+    rpc GetSurvey(GetSurveyRequest) returns (Survey) {}
+    rpc ListSurveys(ListSurveysRequest) returns (ListSurveysResponse) {}
+    rpc DeleteSurvey(DeleteSurveyRequest) returns (google.protobuf.Empty) {}
+
+}
+
+// Template is a template for a survey. The frontend can poll the backend to get a specific template and then use that to create a survey for a user.
+message Template {
+    // id is the unique identifier for the template
+    string id = 1;
+
+    // name is the name of the template, e.g "Customer satisfaction"
+    string name = 2;
+
+    // description is a short description of the template
+    string description = 3;
+
+    // tags is a list of tags that can be used to categorize the template
+    repeated string tags = 4;
+
+    // questions is a list of questions that are part of the template
+    repeated Question questions = 5;
+
+    // created is the timestamp for when the template was created
+    google.protobuf.Timestamp created = 6;
+
+    // updated is the timestamp for when the template was last updated
+    google.protobuf.Timestamp updated = 7;
+}
+
+// Survey is a small survey that can be sent to a user to get feedback
+// on a specific topic, process or service. Displayed after the user has
+// completed a task on the website or in the app. The survey is conducted
+// directly in the app or on the website.
+message Survey {
+    // the ID is generated when the survey is created in the backend
+    string id = 1;
+
+    // template_id is the ID of the template that the survey is based on
+    string template_id = 2;
+
+    // answers is a list of answers to the questions in the template
+    repeated Answer answers = 3;
+
+    // created is the timestamp for when the survey was created
+    google.protobuf.Timestamp created = 4;
+}
+
+message Question {
+    // id is the unique identifier for the question
+    string id = 1;
+
+    // template_id is the ID of the template that the question is part of
+    string template_id = 2;
+
+    // text is the text of the question, e.g. "How satisfied are you with the service?"
+    string text = 3;
+
+    // choices is a list of choices for the question  if the type is MULTI_CHOICE or SINGLE_CHOICE
+    repeated string choices = 4;
+
+    // type is the type of question, e.g. "text",  "rating", "bool"
+    Type type = 5;
+
+    enum Type {
+        QUESTION_TYPE_NOT_SPECIFIED = 0;
+
+        // question that expects a text answer
+        QUESTION_TYPE_TEXT = 1;
+
+        // question that expects a rating answer, 1-7
+        QUESTION_TYPE_RATING = 2;
+
+        // question that expects a yes/no answer
+        QUESTION_TYPE_BOOL = 3;
+
+        // question that expects a multiple choice answer
+        QUESTION_TYPE_MULTIPLE_CHOICE = 4;
+
+        // question that expects a single choice answer
+        QUESTION_TYPE_SINGLE_CHOICE = 5;
+    }
+
+    // required is a flag that indicates if the question is required or not
+    bool required = 6;
+
+    // created is the timestamp for when the question was created
+    google.protobuf.Timestamp created = 7;
+
+    // updated is the timestamp for when the question was last updated
+    google.protobuf.Timestamp updated = 8;
+}
+
+message Answer {
+    // id is the unique identifier for the answer
+    string id = 1;
+
+    // question_id is the ID of the question that the answer is for
+    string question_id = 2;
+
+    // text is the text of the answer
+    string text = 3;
+
+    // rating is the rating of the answer, 1-7
+    int32 rating = 4;
+
+    // bool is the bool of the answer
+    bool bool = 5;
+
+    // choices is a list of choices for the question  if the type is MULTI_CHOICE or SINGLE_CHOICE
+    repeated string choices = 6;
+}
+
+message CreateTemplateRequest {
+    // name is the name of the template, e.g "Customer satisfaction"
+    string name = 1;
+
+    // description is a short description of the template
+    string description = 2;
+
+    // tags is a list of tags that can be used to categorize the template
+    repeated string tags = 3;
+
+    // questions is a list of questions that are part of the template
+    repeated Question questions = 4;
+}
+
+message GetTemplateRequest {}
+
+message ListTemplatesRequest {
+    // tags is a list of tags that can be used to filter the templates
+    repeated string tags = 1;
+
+    // search for description and name, wild card search
+    optional string search = 2;
+
+    // filter by exact match on name
+    optional string name = 3;
+
+    // pagination
+    optional int64 limit  = 4;
+    optional int64 offset = 5;
+}
+
+message ListTemplatesResponse {
+    // templates is a list of templates that match the search criteria
+    repeated Template templates = 1;
+
+    // pagination info
+    PageInfo page_info = 2;
+}
+
+message UpdateTemplateRequest {
+    // template_id is the ID of the template that should be updated
+    string template_id = 1;
+
+    // if name is set, the name of the template will be updated
+    optional string name = 2;
+
+    // if description is set, the description of the template will be updated
+    optional string description = 3;
+
+    // if tags is set, the tags of the template will be updated
+    optional Tags tags = 4;
+
+    // if questions is set, the questions of the template will be replaced with the new questions
+    optional Questions questions = 5;
+}
+
+//
+message Questions {
+    // questions is a list of questions that are part of the template
+    repeated Question questions = 1;
+}
+
+// Tags is a list of tags that can be used to categorize the template
+message Tags {
+    repeated string tags = 1;
+}
+
+message DeleteTemplateRequest {
+    string template_id = 1;
+}
+
+message PageInfo {
+    // the total number of devices that matched the search
+    int64 total = 1;
+
+    // the offset used in the search
+    optional int64 offset = 2;
+
+    // the limit used in the search
+    optional int64 limit = 3;
+
+    // the number of devices returned in this page
+    int64 count = 4;
+}
+
+message ListSurveysRequest {
+    repeated string template_ids = 1;
+
+    // pagination
+    optional int64 limit  = 4;
+    optional int64 offset = 5;
+}
+
+
+message CreateSurveyRequest {
+    // template_id is the ID of the template that the survey is based on
+    string template_id = 1;
+
+    // answers is a list of answers to the questions in the template
+    repeated Answer answers = 2;
+}
+
+message GetSurveyRequest {
+    string survey_id = 1;
+}
+
+message ListSurveysResponse {
+    // surveys is a list of surveys that match the search criteria
+    repeated Survey surveys = 1;
+
+    // pagination info
+    PageInfo page_info = 2;
+}
+
+
+message DeleteSurveyRequest {
+    string survey_id = 1;
+}

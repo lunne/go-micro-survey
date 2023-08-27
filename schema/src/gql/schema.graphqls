@@ -1,0 +1,35 @@
+
+
+type Query {
+    # get a single template by its id
+    template(id: ID!): Template
+
+    # list all templates by name and search
+    templates(search: String, name: String limit: Int, offset: Int): [Template!]
+
+    # get a single survey by its id
+    survey(id: ID!): Survey
+    # list all surveys by template ids
+    surveys(templateIds: [String!], limit: Int, offset: Int): [Survey!]
+
+}
+
+
+type Mutation {
+    # create a new template with questions
+    createTemplate(input: CreateTemplateInput): Template
+
+    # update a existing template by its id
+    updateTemplate(input: UpdateTemplateInput): Template
+
+    # delete a template by its id
+    deleteTemplate(id: ID!): Template
+
+    # create a new survey with answers
+    createSurvey(input: CreateSurveyInput): Survey
+
+    # delete a survey by its id
+    deleteSurvey(id: ID!): Survey
+
+
+}
