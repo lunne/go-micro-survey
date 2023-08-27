@@ -17,6 +17,16 @@ To crate a new Survey the frontend should use the GraphQL API to get a Template 
 Backend is driven with Protocol Buffer and GRPC. The CLI can be used to create new Templates and list Surveys
 
 ## Datamodel
+
+### Questions
+The survey consist of a set of Questions that has a specific type. The question can also be marked as REQUIRED which means that the frontend should not allowed the questions to be unanswered.
+#### Types
+- **TEXT**: Regular text answer expected on the questions
+- **RATING**: A Rating answer is expected, between 1-7
+- **BOOL**: Yes and now questions, True or False
+- **MULTIPLE_CHOICE**: Multiple choices should be presented, a list of Options `[]string` is used to determine which options that are available.
+
+
 ### Template
 A template is created with a set of questiosn and a name and description. This is later used by the Frontend to generate a Survey that can be completed by a user.
 

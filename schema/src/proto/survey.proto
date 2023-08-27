@@ -93,9 +93,6 @@ message Question {
 
         // question that expects a multiple choice answer
         QUESTION_TYPE_MULTIPLE_CHOICE = 4;
-
-        // question that expects a single choice answer
-        QUESTION_TYPE_SINGLE_CHOICE = 5;
     }
 
     // required is a flag that indicates if the question is required or not

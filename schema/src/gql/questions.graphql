@@ -32,7 +32,6 @@ enum QuestionType {
   RATING
   BOOLEAN
   MULTIPLE_CHOICE
-  SINGLE_CHOICE
 }
 
 
